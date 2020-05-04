@@ -42,7 +42,6 @@ func main() {
 		if !strings.HasSuffix(path, "/") {
 			path = path + "/"
 		}
-		fmt.Printf("Scanning %c[0;34m%s%c[0m ...\n", 0x1B, path, 0x1B)
 		info, err := os.Stat(path)
 		if err != nil || !info.IsDir() {
 			fmt.Printf("Error while scanning %c[0;34m%s%c[0m :", 0x1B, path, 0x1B)
@@ -163,6 +162,9 @@ func main() {
 		}
 		err = ioutil.WriteFile("conf.yml", yamlChanged, 0644)
 	}
+
+	fmt.Println("Press any key to exit...")
+	fmt.Scanln()
 
 }
 
