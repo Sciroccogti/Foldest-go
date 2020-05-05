@@ -77,11 +77,7 @@ func doRule(rule *Rule, path string, isVerbose bool) {
 	}
 
 	// Moving files to rule dir
-	for count, file := range dir {
-		if count > 10 {
-			break
-		}
-
+	for _, file := range dir {
 		// jump rule dir
 		if file.Name() == rule.Name || file.IsDir() {
 			continue
@@ -91,19 +87,21 @@ func doRule(rule *Rule, path string, isVerbose bool) {
 			re := regexp.MustCompile(pattern)
 			match := re.MatchString(file.Name())
 			if match {
-				modTime, strerr := GetFileModTime(path + rule.Name + file.Name())
+				modTime, strerr := GetFileModTime(path + file.Name())
 				if strerr == "" {
 					if isVerbose {
-						fmt.Printf("%c[0;34m%s%c[0m %c[0;32m%s%c[0m\n", 0x1B, file.Name(), 0x1B, 0x1B, modTime, 0x1B)
+						fmt.Printf("%c[0;34m%s%c[0m %c[0;32m%s%c[0m %d\n", 0x1B, file.Name(), 0x1B, 0x1B, modTime, 0x1B, file.Size())
 					}
 					// If file reaches deleteday
 					if time.Now().Unix()-modTime.Unix() >= int64(rule.Thresh*86400) {
-						if isVerbose {
-							fmt.Printf("%c[0;34m%s%c[0m matches %c[0;33m%s%c[0m\n", 0x1B, file.Name(), 0x1B, 0x1B, rule.Name, 0x1B)
+						if (rule.Maxsize <= 0 || file.Size() < (int64)(rule.Maxsize)*1024*1024) && file.Size() > (int64)(rule.Minsize)*1024*1024 {
+							if isVerbose {
+								fmt.Printf("%c[0;34m%s%c[0m matches %c[0;33m%s%c[0m\n", 0x1B, file.Name(), 0x1B, 0x1B, rule.Name, 0x1B)
+							}
+							src := path + file.Name()
+							des := path + rule.Name + file.Name()
+							MoveAll(file, src, des)
 						}
-						src := path + file.Name()
-						des := path + rule.Name + file.Name()
-						MoveAll(file, src, des)
 					}
 				} else {
 					fmt.Printf("Error while scanning %c[0;34m%s%c[0m :", 0x1B, file.Name(), 0x1B)

@@ -15,10 +15,12 @@ type Conf struct {
 
 // Rule : a template struct for a rule
 type Rule struct {
-	Enable bool     `yaml:"enable"`
-	Name   string   `yaml:"name"`
-	Regex  []string `yaml:"regex"`
-	Thresh int      `yaml:"threshday"`
+	Enable  bool     `yaml:"enable"`
+	Name    string   `yaml:"name"`
+	Regex   []string `yaml:"regex"`
+	Thresh  int      `yaml:"threshday"`
+	Maxsize int      `yaml:"maxsize"`
+	Minsize int      `yaml:"minsize"`
 }
 
 // Rules :

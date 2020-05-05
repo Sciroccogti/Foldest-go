@@ -16,7 +16,7 @@ tmpbin:
   treshday: 30 # files not modified for more than this long will be moved into tmpbin, 30 days as default
   deleteday: 30 # files in tmpbin for more than this long will be deleted, 30 days as default
 ```
-4. Set your rules in `rules.yml`: (Currently support 10 rules atmost)
+4. Set your rules in `rules.yml`: (Currently support 10 rules utmost)
 ```yml
 rule1:
   enable: true
@@ -25,6 +25,9 @@ rule1:
   - ".*?.doc"
   - ".*?.docx"
   - ".*?.pdf"
+  threshday: 7
+  maxsize: # MB
+  minsize: # MB
 rule2:
 ...
 ```

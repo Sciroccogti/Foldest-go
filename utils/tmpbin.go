@@ -61,10 +61,7 @@ func Manage(conf *Conf) {
 	if dir == nil {
 		return
 	}
-	for count, file := range dir {
-		if count > 10 {
-			break
-		}
+	for _, file := range dir {
 		modTime, strerr := GetFileModTime(conf.Targetdir + conf.Tmpbin.Name + file.Name())
 		if strerr == "" {
 			if conf.Verbose {
@@ -77,7 +74,12 @@ func Manage(conf *Conf) {
 				fmt.Printf("Deleting %c[0;34m%s%c[0m\n", 0x1B, file.Name(), 0x1B)
 				//}
 				src := conf.Targetdir + conf.Tmpbin.Name + file.Name()
-				err = os.Remove(src)
+				if file.IsDir() {
+					err = os.RemoveAll(src)
+				} else {
+					err = os.Remove(src)
+				}
+
 				if err != nil {
 					fmt.Printf("Error while deleting %c[0;34m%s%c[0m :", 0x1B, file.Name(), 0x1B)
 					fmt.Printf("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
