@@ -1,7 +1,7 @@
 verbose: true
-targetdir: 
+targetdir: D:/Download/
 tmpbin:
-  enable: false
+  enable: true
   name: tmpbin/
   treshday: 30
   deleteday: 30
