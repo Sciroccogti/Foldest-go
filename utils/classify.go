@@ -7,6 +7,7 @@ import (
 	"reflect"
 	"regexp"
 	"strings"
+	"time"
 
 	"gopkg.in/yaml.v2"
 )
@@ -90,13 +91,24 @@ func doRule(rule *Rule, path string, isVerbose bool) {
 			re := regexp.MustCompile(pattern)
 			match := re.MatchString(file.Name())
 			if match {
-				//if isVerbose {
-				fmt.Printf("%c[0;34m%s%c[0m matches %c[0;33m%s%c[0m\n", 0x1B, file.Name(), 0x1B, 0x1B, rule.Name, 0x1B)
-				//}
-
-				src := path + file.Name()
-				des := path + rule.Name + file.Name()
-				MoveAll(file, src, des)
+				modTime, strerr := GetFileModTime(path + rule.Name + file.Name())
+				if strerr == "" {
+					if isVerbose {
+						fmt.Printf("%c[0;34m%s%c[0m %c[0;32m%s%c[0m\n", 0x1B, file.Name(), 0x1B, 0x1B, modTime, 0x1B)
+					}
+					// If file reaches deleteday
+					if time.Now().Unix()-modTime.Unix() >= int64(rule.Thresh*86400) {
+						if isVerbose {
+							fmt.Printf("%c[0;34m%s%c[0m matches %c[0;33m%s%c[0m\n", 0x1B, file.Name(), 0x1B, 0x1B, rule.Name, 0x1B)
+						}
+						src := path + file.Name()
+						des := path + rule.Name + file.Name()
+						MoveAll(file, src, des)
+					}
+				} else {
+					fmt.Printf("Error while scanning %c[0;34m%s%c[0m :", 0x1B, file.Name(), 0x1B)
+					fmt.Printf("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
+				}
 			}
 		}
 	}

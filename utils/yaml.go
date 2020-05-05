@@ -18,6 +18,7 @@ type Rule struct {
 	Enable bool     `yaml:"enable"`
 	Name   string   `yaml:"name"`
 	Regex  []string `yaml:"regex"`
+	Thresh int      `yaml:"threshday"`
 }
 
 // Rules :

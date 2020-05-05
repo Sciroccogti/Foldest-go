@@ -5,3 +5,4 @@ rule1:
   - ".*?.doc"
   - ".*?.docx"
   - ".*?.pdf"
+  threshday: 30
