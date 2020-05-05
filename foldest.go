@@ -10,6 +10,13 @@ func main() {
 	fmt.Println("Press enter to start...")
 	fmt.Scanln()
 
+	rules := utils.ReadRules()
+	if rules == nil {
+		fmt.Println("Skipping classify...")
+	} else {
+		utils.DoClassify(rules, conf.Targetdir, conf.Verbose)
+	}
+
 	if conf.Tmpbin.Enable {
 		utils.Manage(conf)
 	} else {

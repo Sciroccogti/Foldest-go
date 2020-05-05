@@ -7,7 +7,7 @@ import (
 )
 
 // Manage folder
-func Manage(conf *Yaml) {
+func Manage(conf *Conf) {
 	// Make dir 'tmpbin/'
 	_, err := os.Stat(conf.Targetdir + conf.Tmpbin.Name)
 	if err != nil {
@@ -47,31 +47,7 @@ func Manage(conf *Yaml) {
 				//}
 				src := conf.Targetdir + file.Name()
 				des := conf.Targetdir + conf.Tmpbin.Name + file.Name()
-
-				// Check if file already existed in tmpbin
-				if _, err := os.Stat(des); !os.IsNotExist(err) {
-					fmt.Printf("Error while moving %c[0;34m%s%c[0m :", 0x1B, file.Name(), 0x1B)
-					fmt.Printf("\t%c[0;31m%s already existed in %s%c[0m\n", 0x1B, file.Name(), conf.Tmpbin.Name, 0x1B)
-				} else {
-					if !file.IsDir() { // file, not folder
-						_, err := CopyFile(src, des)
-						if err != nil {
-							fmt.Printf("Error while moving %c[0;34m%s%c[0m :", 0x1B, file.Name(), 0x1B)
-							fmt.Printf("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
-						}
-						err = os.Remove(src)
-						if err != nil {
-							fmt.Printf("Error while moving %c[0;34m%s%c[0m :", 0x1B, file.Name(), 0x1B)
-							fmt.Printf("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
-						}
-					} else { // folder
-						err := os.Rename(src, des)
-						if err != nil {
-							fmt.Printf("Error while moving %c[0;34m%s%c[0m :", 0x1B, file.Name(), 0x1B)
-							fmt.Printf("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
-						}
-					}
-				}
+				MoveAll(file, src, des)
 			}
 
 		} else {

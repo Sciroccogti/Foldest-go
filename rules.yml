@@ -1,0 +1,7 @@
+rule1:
+  enable: true
+  name: document
+  regex:
+  - ".*?.doc"
+  - ".*?.docx"
+  - ".*?.pdf"

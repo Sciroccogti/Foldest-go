@@ -10,9 +10,9 @@ import (
 )
 
 // ReadConf : Read conf.yml
-func ReadConf() (conf *Yaml) {
+func ReadConf() (conf *Conf) {
 	fmt.Println("Reading conf.yml ...")
-	conf = new(Yaml)
+	conf = new(Conf)
 	if _, err := os.Stat("conf.yml"); os.IsNotExist(err) {
 		fmt.Println("conf.yml not found, starting with default value ...")
 	} else {
@@ -67,7 +67,7 @@ func SetPath(path *string) (isChanged bool) {
 }
 
 // SetDefault : Set default value of the conf
-func SetDefault(conf *Yaml) {
+func SetDefault(conf *Conf) {
 	if conf.Tmpbin.Name == "" {
 		conf.Tmpbin.Name = "tmpbin/"
 	}
@@ -89,7 +89,7 @@ func SetDefault(conf *Yaml) {
 }
 
 // SaveConf : Save the conf.yml
-func SaveConf(conf *Yaml) {
+func SaveConf(conf *Conf) {
 	fmt.Println("Saving conf.yml ...")
 	yamlChanged, err := yaml.Marshal(conf)
 	if err != nil {

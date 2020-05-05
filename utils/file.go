@@ -5,6 +5,7 @@ import (
 	"io"
 	"io/ioutil"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -44,6 +45,34 @@ func CopyFile(src, des string) (written int64, err error) {
 	defer desFile.Close()
 
 	return io.Copy(desFile, srcFile)
+}
+
+// MoveAll : Move a file or folder
+func MoveAll(file os.FileInfo, src, des string) {
+	// Check if file already existed in rule dir
+	if _, err := os.Stat(des); !os.IsNotExist(err) {
+		fmt.Printf("Error while moving %c[0;34m%s%c[0m :", 0x1B, file.Name(), 0x1B)
+		fmt.Printf("\t%c[0;31m%s already existed in %s%c[0m\n", 0x1B, file.Name(), strings.Replace(des, file.Name(), "", 1), 0x1B)
+	} else {
+		if !file.IsDir() { // file, not folder
+			_, err := CopyFile(src, des)
+			if err != nil {
+				fmt.Printf("Error while moving %c[0;34m%s%c[0m :", 0x1B, file.Name(), 0x1B)
+				fmt.Printf("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
+			}
+			err = os.Remove(src)
+			if err != nil {
+				fmt.Printf("Error while moving %c[0;34m%s%c[0m :", 0x1B, file.Name(), 0x1B)
+				fmt.Printf("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
+			}
+		} else { // folder
+			err := os.Rename(src, des)
+			if err != nil {
+				fmt.Printf("Error while moving %c[0;34m%s%c[0m :", 0x1B, file.Name(), 0x1B)
+				fmt.Printf("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
+			}
+		}
+	}
 }
 
 // CheckDir : Check if path is a folder
