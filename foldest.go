@@ -18,6 +18,7 @@ func main() {
 	}
 
 	if conf.Tmpbin.Enable {
+		fmt.Println("Performing tmpbin...")
 		utils.Manage(conf)
 	} else {
 		fmt.Println("tmpbin is disabled, skipping...")
