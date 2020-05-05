@@ -1,0 +1,9 @@
+verbose: true
+targetdir: D:/Download/
+tmpbin:
+  enable: true
+  name: tmpbin/
+  treshday: 30
+  deleteday: 30
+  ignore:
+  - .accelerate

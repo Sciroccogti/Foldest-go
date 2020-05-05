@@ -1,0 +1,20 @@
+rule1:
+  enable: true
+  name: document
+  regex:
+  - ".*?.doc"
+  - ".*?.docx"
+  - ".*?.pdf"
+  threshday: 7
+  maxsize:
+  minsize:
+rule2:
+  enable: true
+  name: films
+  regex:
+  - ".*?.mp4"
+  - ".*?.avi"
+  - ".*?.flv"
+  threshday: 7
+  maxsize:
+  minsize: 300
