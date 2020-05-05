@@ -20,5 +20,5 @@ tmpbin:
 ## Development progress
  
 - [ ] Automatic
-- [ ] Temp trash bin
+- [x] Temp trash bin
 - [ ] Customize rules

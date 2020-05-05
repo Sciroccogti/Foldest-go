@@ -1,7 +1,9 @@
-verbose:
-targetdir:
+verbose: true
+targetdir: 
 tmpbin:
-  enable:
-  name:
-  treshday:
-  deleteday:
+  enable: false
+  name: tmpbin/
+  treshday: 30
+  deleteday: 30
+  ignore:
+  - .accelerate
