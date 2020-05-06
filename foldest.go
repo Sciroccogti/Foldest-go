@@ -4,6 +4,7 @@ package main
 
 import (
 	"fmt"
+	"foldest-go/lorca"
 	"foldest-go/utils"
 	"log"
 	"net"
@@ -11,74 +12,38 @@ import (
 	"os"
 	"os/signal"
 	"runtime"
-	"sync"
-
-	"foldest-go/lorca"
 )
-
-type start struct {
-	sync.Mutex
-	isStart bool
-	ui      lorca.UI
-}
-
-func (s *start) Start() {
-	s.ui.Eval(`console.log("OHHHHHHHHHH!");`)
-	s.Lock()
-	defer s.Unlock()
-	exitsignal := make(chan bool)
-	s.isStart = true
-	go mainThread(s, exitsignal)
-	<-exitsignal
-	s.ui.Eval(`console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!");`)
-	s.isStart = false
-}
-
-func (s *start) Stop() {
-	s.Lock()
-	defer s.Unlock()
-	s.isStart = false
-}
-
-func (s *start) Status() (status bool) {
-	s.Lock()
-	defer s.Unlock()
-	return s.isStart
-}
-
-func (s *start) Output() (output string) {
-	s.Lock()
-	defer s.Unlock()
-	return "haha!\n"
-}
 
 func main() {
 	args := []string{}
 	if runtime.GOOS == "linux" {
 		args = append(args, "--class=Lorca")
 	}
-	s := &start{}
+	pf := &utils.Front{}
 	var err error
-	s.ui, err = lorca.New("", "", 480, 320, args...)
+	pf.Ui, err = lorca.New("", "", 480, 320, args...)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer s.ui.Close()
+	defer pf.Ui.Close()
 
+	stdout := make(chan string, 10)
+	utils.Plog.Init(&stdout)
 	// A simple way to know when UI is ready (uses body.onload event in JS)
-	s.ui.Bind("start", func() {
+	pf.Ui.Bind("start", func() {
 		log.Println("UI is ready")
+		utils.Plog.Print("UI is ready\n")
 	})
 
 	// Create and bind Go object to the UI
-	s.ui.Bind("mainStart", s.Start)
-	// ui.Bind("mainStop", s.Stop)
-	s.ui.Bind("mainStatus", s.Status)
-	s.ui.Bind("getoutput", s.Output)
+	pf.Ui.Bind("mainStart", pf.Start)
+	// Ui.Bind("mainStop", pf.Stop)
+	pf.Ui.Bind("mainStatus", pf.Status)
+	pf.Ui.Bind("getline", utils.Plog.Getline)
 
 	// Load HTML.
 	// You may also use `data:text/html,<base64>` approach to load initial HTML,
-	// e.g: ui.Load("data:text/html," + url.PathEscape(html))
+	// e.g: Ui.Load("data:text/html," + url.PathEscape(html))
 
 	ln, err := net.Listen("tcp", "127.0.0.1:0")
 	if err != nil {
@@ -86,46 +51,35 @@ func main() {
 	}
 	defer ln.Close()
 	go http.Serve(ln, http.FileServer(FS))
-	s.ui.Load(fmt.Sprintf("http://%s", ln.Addr()))
+	pf.Ui.Load(fmt.Sprintf("http://%s", ln.Addr()))
 
 	// You may use console.log to debug your JS code, it will be printed via
 	// log.Println(). Also exceptions are printed in a similar manner.
-	s.ui.Eval(`
-		console.log("Hello, world!");
-		console.log('Multiple values:', [1, false, {"x":5}]);
-	`)
+	pf.Ui.Eval(`
+			console.log("Hello, world!");
+			console.log('Multiple values:', [1, false, {"x":5}]);
+		`)
 
 	// Wait until the interrupt signal arrives or browser window is closed
 	sigc := make(chan os.Signal)
 	signal.Notify(sigc, os.Interrupt)
 	select {
 	case <-sigc:
-	case <-s.ui.Done():
+	case <-pf.Ui.Done():
 	}
 
 	log.Println("exiting...")
-}
+	// stdout := make(chan string, 10)
+	// utils.Plog.Init(&stdout)
+	// go func() {
+	// 	for {
+	// 		utils.Plog.Print("hoho\n")
+	// 		utils.Plog.Print("hehe\n")
+	// 	}
 
-func mainThread(s *start, exitsignal chan<- bool) {
-	s.ui.Eval(`console.log("Starting...");`)
-	fmt.Println("Starting...")
-	conf := utils.ReadConf()
-
-	rules := utils.ReadRules()
-	if rules == nil {
-		fmt.Println("Skipping classify...")
-	} else {
-		utils.DoClassify(rules, conf.Targetdir, conf.Verbose)
-	}
-
-	if conf.Tmpbin.Enable {
-		fmt.Println("Performing tmpbin...")
-		utils.Manage(conf)
-	} else {
-		fmt.Println("tmpbin is disabled, skipping...")
-	}
-
-	fmt.Println("Exiting...")
-	s.ui.Eval(`console.log("Exiting...");`)
-	exitsignal <- true
+	// }()
+	// for i := 0; i < 100; i++ {
+	// 	lines := utils.Plog.Getline()
+	// 	fmt.Printf(lines)
+	// }
 }

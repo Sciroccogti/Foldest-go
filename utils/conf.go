@@ -11,10 +11,10 @@ import (
 
 // ReadConf : Read conf.yml
 func ReadConf() (conf *Conf) {
-	fmt.Println("Reading conf.yml ...")
+	Plog.Print("Reading conf.yml ...\n")
 	conf = new(Conf)
 	if _, err := os.Stat("conf.yml"); os.IsNotExist(err) {
-		fmt.Println("conf.yml not found, starting with default value ...")
+		Plog.Print("conf.yml not found, starting with default value ...\n")
 	} else {
 		yamlFile, err := ioutil.ReadFile("conf.yml")
 		if err != nil {
@@ -48,7 +48,7 @@ func SetPath(path *string) (isChanged bool) {
 
 	for {
 		if *path == "" {
-			fmt.Println("Please input path of the target folder:")
+			Plog.Print("Please input path of the target folder:\n")
 			fmt.Scanln(path)
 			isChanged = true
 		}
@@ -90,7 +90,7 @@ func SetDefault(conf *Conf) {
 
 // SaveConf : Save the conf.yml
 func SaveConf(conf *Conf) {
-	fmt.Println("Saving conf.yml ...")
+	Plog.Print("Saving conf.yml ...\n")
 	yamlChanged, err := yaml.Marshal(conf)
 	if err != nil {
 		fmt.Printf("Error while saving conf.yml :\n")

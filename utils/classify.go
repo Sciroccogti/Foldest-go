@@ -14,11 +14,11 @@ import (
 
 // ReadRules : Read rules.yml
 func ReadRules() (rules *Rules) {
-	fmt.Println("Reading conf.yml ...")
+	Plog.Print("Reading rules.yml ...\n")
 	rules = new(Rules)
 
 	if _, err := os.Stat("rules.yml"); os.IsNotExist(err) {
-		fmt.Println("rules.yml not found, skipping ...")
+		Plog.Print("rules.yml not found, skipping ...\n")
 		return nil
 	}
 
@@ -57,7 +57,7 @@ func DoClassify(rules *Rules, path string, isVerbose bool) {
 
 // doRule :
 func doRule(rule *Rule, path string, isVerbose bool) {
-	fmt.Printf("Performing rule %c[0;33m%s%c[0m ...\n", 0x1B, rule.Name, 0x1B)
+	Plog.Print("Performing rule %c[0;33m%s%c[0m ...\n", 0x1B, rule.Name, 0x1B)
 	if !strings.HasSuffix(rule.Name, "/") {
 		rule.Name = rule.Name + "/"
 	}

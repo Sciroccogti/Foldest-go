@@ -79,9 +79,9 @@
 
         .output-inner {
             padding-right: 17px;
-            border: 2px solid black;
+            border: 2px solid darkslategrey;
             height: 600px;
-            background-color: black;
+            background-color: darkslategrey;
             color: white;
             font-size: small;
         }
@@ -102,11 +102,11 @@
         </div>
         <div class="output-outer">
             <div class="output-inner">
+                Welcome to Foldest, Press the button to start.<br>
                 <!-- Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae nemo, sed porro, officiis, commodi sunt mollitia nihil deleniti perspiciatis repellat facere excepturi laborum. Esse iusto, quam repudiandae consequatur doloremque, id! -->
             </div>
         </div>
     </div>
-
     <!-- Connect UI actions to Go functions -->
     <script>
         const panel = document.querySelector('.panel');
@@ -123,7 +123,9 @@
                 panel.innerText = `Exited`;
                 document.getElementsByClassName("btn-start").disabled = false;
             }
-            inner.innerText += `${await window.getoutput()}`;
+            inner.innerText += `${await window.getline()}`;
+            render();
+            console.log("render")
             // counter.innerText = `Count: ${await window.counterValue()}`;
         };
 
@@ -136,7 +138,6 @@
         //     await counterAdd(-1); // Call Go function
         //     render();
         // });
-
         render();
     </script>
 </body>
