@@ -103,7 +103,6 @@
         <div class="output-outer">
             <div class="output-inner">
                 Welcome to Foldest, Press the button to start.<br>
-                <!-- Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae nemo, sed porro, officiis, commodi sunt mollitia nihil deleniti perspiciatis repellat facere excepturi laborum. Esse iusto, quam repudiandae consequatur doloremque, id! -->
             </div>
         </div>
     </div>
@@ -112,7 +111,6 @@
         const panel = document.querySelector('.panel');
         const btnStart = document.querySelector('.btn-start');
         const inner = document.querySelector('.output-inner');
-        // const btnDecr = document.querySelector('.btn-decr');
 
         // We use async/await because Go functions are asynchronous
         const render = async () => {
@@ -123,21 +121,16 @@
                 panel.innerText = `Exited`;
                 document.getElementsByClassName("btn-start").disabled = false;
             }
-            inner.innerText += `${await window.getline()}`;
+            inner.insertAdjacentHTML('beforeend', `${await window.getline()}`);
+            inner.insertAdjacentHTML('beforeend', "<br>");
             render();
-            console.log("render")
-            // counter.innerText = `Count: ${await window.counterValue()}`;
+            console.log("rendering...")
         };
 
         btnStart.addEventListener('click', async () => {
             await mainStart(); // Call Go function
             render();
         });
-
-        // btnDecr.addEventListener('click', async () => {
-        //     await counterAdd(-1); // Call Go function
-        //     render();
-        // });
         render();
     </script>
 </body>

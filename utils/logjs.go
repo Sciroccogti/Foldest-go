@@ -2,7 +2,7 @@ package utils
 
 import (
 	"fmt"
-	"regexp"
+	"strings"
 	"sync"
 )
 
@@ -36,10 +36,17 @@ func (pl *Logjs) Print(format string, a ...interface{}) {
 	// mu.Lock()
 	// defer mu.Unlock()
 	s := fmt.Sprintf(format, a...)
-	end := regexp.MustCompile(`.*?%c[0;\dm.*?(%c[0m)`)
-	s = end.ReplaceAllString(s, "</span>")
-	red := regexp.MustCompile(`.*?(%c[0;31m).*?%c[0m`)
-	s = red.ReplaceAllString(s, "<span style=\"color: red;\">")
+	s = strings.ReplaceAll(s, (string)(0x1B)+"[0m", "</span>")
+	s = strings.ReplaceAll(s, (string)(0x1B)+"[0;31m", "<span style=\"color: red;\">")
+	s = strings.ReplaceAll(s, (string)(0x1B)+"[0;32m", "<span style=\"color: green;\">")
+	s = strings.ReplaceAll(s, (string)(0x1B)+"[0;33m", "<span style=\"color: yellow;\">")
+	s = strings.ReplaceAll(s, (string)(0x1B)+"[0;34m", "<span style=\"color: blue;\">")
+	// green := regexp.MustCompile(`.*?(%c\[0;32m)%s%c\[0m`)
+	// s = green.ReplaceAllString(s, "<span style=\"color: green;\">")
+	// yellow := regexp.MustCompile(`.*?(%c\[0;33m)%s%c\[0m`)
+	// s = yellow.ReplaceAllString(s, "<span style=\"color: yellow;\">")
+	// blue := regexp.MustCompile(`.*?(%c\[0;34m)%s%c\[0m`)
+	// s = blue.ReplaceAllString(s, "<span style=\"color: blue;\">")
 	*Plog.stdout <- s
 	// Plog.Buf.WriteString(line)
 }

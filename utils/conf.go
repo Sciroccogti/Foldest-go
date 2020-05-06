@@ -18,13 +18,13 @@ func ReadConf() (conf *Conf) {
 	} else {
 		yamlFile, err := ioutil.ReadFile("conf.yml")
 		if err != nil {
-			fmt.Printf("Error while reading conf.yml :\n")
-			fmt.Printf("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
+			Plog.Print("Error while reading conf.yml :\n")
+			Plog.Print("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
 		}
 		err = yaml.Unmarshal(yamlFile, conf)
 		if err != nil {
-			fmt.Printf("Error while reading conf.yml :\n")
-			fmt.Printf("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
+			Plog.Print("Error while reading conf.yml :\n")
+			Plog.Print("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
 		}
 	}
 
@@ -93,8 +93,8 @@ func SaveConf(conf *Conf) {
 	Plog.Print("Saving conf.yml ...\n")
 	yamlChanged, err := yaml.Marshal(conf)
 	if err != nil {
-		fmt.Printf("Error while saving conf.yml :\n")
-		fmt.Printf("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
+		Plog.Print("Error while saving conf.yml :\n")
+		Plog.Print("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
 	}
 	err = ioutil.WriteFile("conf.yml", yamlChanged, 0644)
 }

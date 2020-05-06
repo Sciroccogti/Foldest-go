@@ -56,9 +56,9 @@ func main() {
 	// You may use console.log to debug your JS code, it will be printed via
 	// log.Println(). Also exceptions are printed in a similar manner.
 	pf.Ui.Eval(`
-			console.log("Hello, world!");
-			console.log('Multiple values:', [1, false, {"x":5}]);
-		`)
+				console.log("Hello, world!");
+				console.log('Multiple values:', [1, false, {"x":5}]);
+			`)
 
 	// Wait until the interrupt signal arrives or browser window is closed
 	sigc := make(chan os.Signal)
@@ -73,7 +73,7 @@ func main() {
 	// utils.Plog.Init(&stdout)
 	// go func() {
 	// 	for {
-	// 		utils.Plog.Print("hoho\n")
+	// 		utils.Plog.Print("Scanning %c[0;34m%s%c[0m ...\n", 0x1B, "path", 0x1B)
 	// 		utils.Plog.Print("hehe\n")
 	// 	}
 
