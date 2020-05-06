@@ -1,4 +1,4 @@
-verbose: true
+verbose: false
 targetdir: D:/Download/
 tmpbin:
   enable: true
