@@ -46,6 +46,12 @@ func (s *start) Status() (status bool) {
 	return s.isStart
 }
 
+func (s *start) Output() (output string) {
+	s.Lock()
+	defer s.Unlock()
+	return "haha!\n"
+}
+
 func main() {
 	args := []string{}
 	if runtime.GOOS == "linux" {
@@ -68,6 +74,7 @@ func main() {
 	s.ui.Bind("mainStart", s.Start)
 	// ui.Bind("mainStop", s.Stop)
 	s.ui.Bind("mainStatus", s.Status)
+	s.ui.Bind("getoutput", s.Output)
 
 	// Load HTML.
 	// You may also use `data:text/html,<base64>` approach to load initial HTML,

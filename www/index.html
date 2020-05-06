@@ -64,6 +64,31 @@
             box-shadow: 0 1px #8b5e00;
             top: 5px;
         }
+
+        .output-outer {
+            border: 1px solid;
+            width: 75%;
+            margin: 0 auto;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .output-outer:hover {
+            overflow-y: auto;
+        }
+
+        .output-inner {
+            padding-right: 17px;
+            border: 2px solid black;
+            height: 600px;
+            background-color: black;
+            color: white;
+            font-size: small;
+        }
+
+        .output-outer:hover .output-inner {
+            padding-right: 0px;
+        }
     </style>
 </head>
 
@@ -75,22 +100,30 @@
             <div class="btn btn-start">start</div>
             <!-- <div class="btn btn-decr">-1</div> -->
         </div>
+        <div class="output-outer">
+            <div class="output-inner">
+                <!-- Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae nemo, sed porro, officiis, commodi sunt mollitia nihil deleniti perspiciatis repellat facere excepturi laborum. Esse iusto, quam repudiandae consequatur doloremque, id! -->
+            </div>
+        </div>
     </div>
 
     <!-- Connect UI actions to Go functions -->
     <script>
         const panel = document.querySelector('.panel');
         const btnStart = document.querySelector('.btn-start');
+        const inner = document.querySelector('.output-inner');
         // const btnDecr = document.querySelector('.btn-decr');
 
         // We use async/await because Go functions are asynchronous
         const render = async () => {
             if (await window.mainStatus()) {
-                panel.innerText = `Running`
+                panel.innerText = `Running`;
+                document.getElementsByClassName("btn-start").disabled = true;
             } else {
-                panel.innerText = `Exited`
+                panel.innerText = `Exited`;
+                document.getElementsByClassName("btn-start").disabled = false;
             }
-            
+            inner.innerText += `${await window.getoutput()}`;
             // counter.innerText = `Count: ${await window.counterValue()}`;
         };
 
