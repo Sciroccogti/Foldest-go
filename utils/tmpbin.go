@@ -25,10 +25,7 @@ func Manage(conf *Conf) {
 	}
 
 	// Moving files to tmpbin
-	for count, file := range dir {
-		if count > 10 {
-			break
-		}
+	for _, file := range dir {
 		modTime, strerr := GetFileModTime(conf.Targetdir + file.Name())
 		if strerr == "" {
 			// jump tmpbin

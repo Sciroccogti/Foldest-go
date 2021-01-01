@@ -54,7 +54,7 @@ func MoveAll(file os.FileInfo, src, des string) {
 		fmt.Printf("Error while moving %c[0;34m%s%c[0m :", 0x1B, file.Name(), 0x1B)
 		fmt.Printf("\t%c[0;31m%s already existed in %s%c[0m\n", 0x1B, file.Name(), strings.Replace(des, file.Name(), "", 1), 0x1B)
 	} else {
-		if !file.IsDir() { // file, not folder
+		if (!file.IsDir() &&  file.Size() < 300 * 1024 * 1024) { // file smaller than 300MB, not folder
 			_, err := CopyFile(src, des)
 			if err != nil {
 				fmt.Printf("Error while moving %c[0;34m%s%c[0m :", 0x1B, file.Name(), 0x1B)
@@ -65,7 +65,7 @@ func MoveAll(file os.FileInfo, src, des string) {
 				fmt.Printf("Error while moving %c[0;34m%s%c[0m :", 0x1B, file.Name(), 0x1B)
 				fmt.Printf("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
 			}
-		} else { // folder
+		} else { // folder or file larger than 300MB
 			err := os.Rename(src, des)
 			if err != nil {
 				fmt.Printf("Error while moving %c[0;34m%s%c[0m :", 0x1B, file.Name(), 0x1B)
