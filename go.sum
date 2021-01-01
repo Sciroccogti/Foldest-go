@@ -1,3 +1,5 @@
+github.com/andlabs/ui v0.0.0-20200610043537-70a69d6ae31e h1:wSQCJiig/QkoUnpvelSPbLiZNWvh2yMqQTQvIQqSUkU=
+github.com/andlabs/ui v0.0.0-20200610043537-70a69d6ae31e/go.mod h1:5G2EjwzgZUPnnReoKvPWVneT8APYbyKkihDVAHUi0II=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/yaml.v2 v2.2.8 h1:obN1ZagJSUGI0Ek/LBmuj4SNLPfIny3KsKFopxRdj10=
 gopkg.in/yaml.v2 v2.2.8/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
