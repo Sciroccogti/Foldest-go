@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"fmt"
 	"io/ioutil"
 	"os"
 	"reflect"
@@ -14,23 +13,23 @@ import (
 
 // ReadRules : Read rules.yml
 func ReadRules() (rules *Rules) {
-	fmt.Println("Reading conf.yml ...")
+	Print("Reading conf.yml ...\n")
 	rules = new(Rules)
 
 	if _, err := os.Stat("rules.yml"); os.IsNotExist(err) {
-		fmt.Println("rules.yml not found, skipping ...")
+		Print("rules.yml not found, skipping ...\n")
 		return nil
 	}
 
 	yamlFile, err := ioutil.ReadFile("rules.yml")
 	if err != nil {
-		fmt.Printf("Error while reading rules.yml :\n")
-		fmt.Printf("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
+		Print("Error while reading rules.yml :\n")
+		Print("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
 	}
 	err = yaml.Unmarshal(yamlFile, rules)
 	if err != nil {
-		fmt.Printf("Error while reading rules.yml :\n")
-		fmt.Printf("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
+		Print("Error while reading rules.yml :\n")
+		Print("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
 	}
 
 	return rules
@@ -57,17 +56,17 @@ func DoClassify(rules *Rules, path string, isVerbose bool) {
 
 // doRule :
 func doRule(rule *Rule, path string, isVerbose bool) {
-	fmt.Printf("Performing rule %c[0;33m%s%c[0m ...\n", 0x1B, rule.Name, 0x1B)
+	Print("Performing rule %c[0;33m%s%c[0m ...\n", 0x1B, rule.Name, 0x1B)
 	if !strings.HasSuffix(rule.Name, "/") {
 		rule.Name = rule.Name + "/"
 	}
 	_, err := os.Stat(path + rule.Name)
 	if err != nil {
-		fmt.Printf("Making folder %c[0;33m%s%c[0m ...\n", 0x1B, rule.Name, 0x1B)
+		Print("Making folder %c[0;33m%s%c[0m ...\n", 0x1B, rule.Name, 0x1B)
 		err := os.Mkdir(path+rule.Name, 0777)
 		if err != nil {
-			fmt.Printf("Error while making folder %c[0;33m%s%c[0m ...\n", 0x1B, rule.Name, 0x1B)
-			fmt.Printf("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
+			Print("Error while making folder %c[0;33m%s%c[0m ...\n", 0x1B, rule.Name, 0x1B)
+			Print("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
 		}
 	}
 
@@ -90,13 +89,13 @@ func doRule(rule *Rule, path string, isVerbose bool) {
 				modTime, strerr := GetFileModTime(path + file.Name())
 				if strerr == "" {
 					if isVerbose {
-						fmt.Printf("%c[0;34m%s%c[0m %c[0;32m%s%c[0m %d\n", 0x1B, file.Name(), 0x1B, 0x1B, modTime, 0x1B, file.Size())
+						Print("%c[0;34m%s%c[0m %c[0;32m%s%c[0m %d\n", 0x1B, file.Name(), 0x1B, 0x1B, modTime, 0x1B, file.Size())
 					}
 					// If file reaches deleteday
 					if time.Now().Unix()-modTime.Unix() >= int64(rule.Thresh*86400) {
 						if (rule.Maxsize <= 0 || file.Size() < (int64)(rule.Maxsize)*1024*1024) && file.Size() > (int64)(rule.Minsize)*1024*1024 {
 							if isVerbose {
-								fmt.Printf("%c[0;34m%s%c[0m matches %c[0;33m%s%c[0m\n", 0x1B, file.Name(), 0x1B, 0x1B, rule.Name, 0x1B)
+								Print("%c[0;34m%s%c[0m matches %c[0;33m%s%c[0m\n", 0x1B, file.Name(), 0x1B, 0x1B, rule.Name, 0x1B)
 							}
 							src := path + file.Name()
 							des := path + rule.Name + file.Name()
@@ -104,8 +103,8 @@ func doRule(rule *Rule, path string, isVerbose bool) {
 						}
 					}
 				} else {
-					fmt.Printf("Error while scanning %c[0;34m%s%c[0m :", 0x1B, file.Name(), 0x1B)
-					fmt.Printf("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
+					Print("Error while scanning %c[0;34m%s%c[0m :", 0x1B, file.Name(), 0x1B)
+					Print("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
 				}
 			}
 		}

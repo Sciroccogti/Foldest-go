@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
@@ -51,25 +50,25 @@ func CopyFile(src, des string) (written int64, err error) {
 func MoveAll(file os.FileInfo, src, des string) {
 	// Check if file already existed in rule dir
 	if _, err := os.Stat(des); !os.IsNotExist(err) {
-		fmt.Printf("Error while moving %c[0;34m%s%c[0m :", 0x1B, file.Name(), 0x1B)
-		fmt.Printf("\t%c[0;31m%s already existed in %s%c[0m\n", 0x1B, file.Name(), strings.Replace(des, file.Name(), "", 1), 0x1B)
+		Print("Error while moving %c[0;34m%s%c[0m :", 0x1B, file.Name(), 0x1B)
+		Print("\t%c[0;31m%s already existed in %s%c[0m\n", 0x1B, file.Name(), strings.Replace(des, file.Name(), "", 1), 0x1B)
 	} else {
 		if (!file.IsDir() &&  file.Size() < 300 * 1024 * 1024) { // file smaller than 300MB, not folder
 			_, err := CopyFile(src, des)
 			if err != nil {
-				fmt.Printf("Error while moving %c[0;34m%s%c[0m :", 0x1B, file.Name(), 0x1B)
-				fmt.Printf("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
+				Print("Error while moving %c[0;34m%s%c[0m :", 0x1B, file.Name(), 0x1B)
+				Print("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
 			}
 			err = os.Remove(src)
 			if err != nil {
-				fmt.Printf("Error while moving %c[0;34m%s%c[0m :", 0x1B, file.Name(), 0x1B)
-				fmt.Printf("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
+				Print("Error while moving %c[0;34m%s%c[0m :", 0x1B, file.Name(), 0x1B)
+				Print("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
 			}
 		} else { // folder or file larger than 300MB
 			err := os.Rename(src, des)
 			if err != nil {
-				fmt.Printf("Error while moving %c[0;34m%s%c[0m :", 0x1B, file.Name(), 0x1B)
-				fmt.Printf("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
+				Print("Error while moving %c[0;34m%s%c[0m :", 0x1B, file.Name(), 0x1B)
+				Print("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
 			}
 		}
 	}
@@ -79,8 +78,8 @@ func MoveAll(file os.FileInfo, src, des string) {
 func CheckDir(path string) (isDir bool) {
 	info, err := os.Stat(path)
 	if err != nil || !info.IsDir() {
-		fmt.Printf("Error while scanning %c[0;34m%s%c[0m :", 0x1B, path, 0x1B)
-		fmt.Printf("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
+		Print("Error while scanning %c[0;34m%s%c[0m :", 0x1B, path, 0x1B)
+		Print("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
 		return false
 	}
 	return true
@@ -88,11 +87,11 @@ func CheckDir(path string) (isDir bool) {
 
 //OpenDir : Open a folder
 func OpenDir(path string) (dir []os.FileInfo) {
-	fmt.Printf("Scanning %c[0;34m%s%c[0m ...\n", 0x1B, path, 0x1B)
+	Print("Scanning %c[0;34m%s%c[0m ...\n", 0x1B, path, 0x1B)
 	dir, err := ioutil.ReadDir(path)
 	if err != nil {
-		fmt.Printf("Error while scanning %c[0;34m%s%c[0m :", 0x1B, path, 0x1B)
-		fmt.Printf("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
+		Print("Error while scanning %c[0;34m%s%c[0m :", 0x1B, path, 0x1B)
+		Print("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
 		return nil
 	}
 	return dir
