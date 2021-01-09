@@ -11,20 +11,20 @@ import (
 
 // ReadConf : Read conf.yml
 func ReadConf() (conf *Conf) {
-	fmt.Println("Reading conf.yml ...")
+	Print("Reading conf.yml ...\n")
 	conf = new(Conf)
 	if _, err := os.Stat("conf.yml"); os.IsNotExist(err) {
-		fmt.Println("conf.yml not found, starting with default value ...")
+		Print("conf.yml not found, starting with default value ...\n")
 	} else {
 		yamlFile, err := ioutil.ReadFile("conf.yml")
 		if err != nil {
-			fmt.Printf("Error while reading conf.yml :\n")
-			fmt.Printf("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
+			Print("Error while reading conf.yml :\n")
+			Print("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
 		}
 		err = yaml.Unmarshal(yamlFile, conf)
 		if err != nil {
-			fmt.Printf("Error while reading conf.yml :\n")
-			fmt.Printf("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
+			Print("Error while reading conf.yml :\n")
+			Print("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
 		}
 	}
 
@@ -48,7 +48,7 @@ func SetPath(path *string) (isChanged bool) {
 
 	for {
 		if *path == "" {
-			fmt.Println("Please input path of the target folder:")
+			Print("Please input path of the target folder:\n")
 			fmt.Scanln(path)
 			isChanged = true
 		}
@@ -90,11 +90,11 @@ func SetDefault(conf *Conf) {
 
 // SaveConf : Save the conf.yml
 func SaveConf(conf *Conf) {
-	fmt.Println("Saving conf.yml ...")
+	Print("Saving conf.yml ...\n")
 	yamlChanged, err := yaml.Marshal(conf)
 	if err != nil {
-		fmt.Printf("Error while saving conf.yml :\n")
-		fmt.Printf("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
+		Print("Error while saving conf.yml :\n")
+		Print("\t%c[0;31m%s%c[0m\n", 0x1B, err, 0x1B)
 	}
 	err = ioutil.WriteFile("conf.yml", yamlChanged, 0644)
 }

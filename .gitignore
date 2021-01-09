@@ -16,3 +16,9 @@ foldest-linux*
 # vendor/
 
 *.code-workspace
+
+output
+windows.syso
+bind*
+
+*.log

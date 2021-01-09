@@ -37,3 +37,11 @@ rule2:
 - [ ] Automatic
 - [x] Temp trash bin
 - [x] Customize rules
+
+## How to Contribute
+
+```Bash
+go get -u github.com/asticode/go-astilectron-bundler/...
+go install github.com/asticode/go-astilectron-bundler/astilectron-bundler
+astilectron-bundler
+```

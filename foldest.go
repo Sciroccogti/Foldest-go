@@ -1,29 +1,29 @@
 package main
 
 import (
-	"fmt"
 	"foldest-go/utils"
 )
 
-func main() {
+// Foldest : main process of foldest
+func Foldest() {
 	conf := utils.ReadConf()
-	fmt.Println("Press enter to start...")
-	fmt.Scanln()
+	// utils.Print("Press enter to start...\n")
+	// fmt.Scanln()
 
 	rules := utils.ReadRules()
 	if rules == nil {
-		fmt.Println("Skipping classify...")
+		utils.Print("Skipping classify...\n")
 	} else {
 		utils.DoClassify(rules, conf.Targetdir, conf.Verbose)
 	}
 
 	if conf.Tmpbin.Enable {
-		fmt.Println("Performing tmpbin...")
+		utils.Print("Performing tmpbin...\n")
 		utils.Manage(conf)
 	} else {
-		fmt.Println("tmpbin is disabled, skipping...")
+		utils.Print("tmpbin is disabled, skipping...\n")
 	}
 
-	fmt.Println("Press enter to exit...")
-	fmt.Scanln()
+	utils.Print("Finished\n")
+	return
 }
