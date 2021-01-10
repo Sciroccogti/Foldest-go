@@ -34,9 +34,17 @@ rule2:
 
 ## Development progress
  
+### Basic Function
+
 - [ ] Automatic
 - [x] Temp trash bin
 - [x] Customize rules
+
+### UI
+
+- [x] Dark mode
+- [ ] Edit conf in UI
+- [ ] Multilingual
 
 ## How to Contribute
 

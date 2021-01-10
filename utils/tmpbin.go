@@ -33,7 +33,8 @@ func Manage(conf *Conf) {
 			}
 
 			if conf.Verbose {
-				Print("%c[0;34m%s%c[0m %c[0;32m%s%c[0m\n", 0x1B, file.Name(), 0x1B, 0x1B, modTime, 0x1B)
+				Print("%c[0;34m%s%c[0m %c[0;32m%s%c[0m\n", 0x1B, file.Name(),
+					0x1B, 0x1B, modTime.Format("2006-01-02 03:04:05"), 0x1B)
 			}
 
 			// If file reaches thresh
@@ -61,7 +62,8 @@ func Manage(conf *Conf) {
 		modTime, strerr := GetFileModTime(conf.Targetdir + conf.Tmpbin.Name + file.Name())
 		if strerr == "" {
 			if conf.Verbose {
-				Print("%c[0;34m%s%c[0m %c[0;32m%s%c[0m\n", 0x1B, file.Name(), 0x1B, 0x1B, modTime, 0x1B)
+				Print("%c[0;34m%s%c[0m %c[0;32m%s%c[0m\n", 0x1B, file.Name(),
+					0x1B, 0x1B, modTime.Format("2006-01-02 03:04:05"), 0x1B)
 			}
 
 			// If file reaches deleteday

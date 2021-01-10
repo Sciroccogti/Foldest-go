@@ -1,26 +1,86 @@
 * {
-    box-sizing:  border-box;
+    box-sizing: border-box;
 }
 
-html, body {
-    background-color: #fff;
-    color: #333;
+html,
+body {
     height: 100%;
     margin: 0;
     width: 100%;
 }
 
-.top {
-    /* margin: 0 auto; */
-    text-align:center;
+@media (prefers-color-scheme: dark) {
+    body {
+        background: #202020;
+        color: white;
+    }
+    #outputs {
+        background-color: #171B22;
+        color: #CBD1D9;
+    }
+    /* Chrome, Safari */
+    #outputs::-webkit-scrollbar {
+        width: 0.9em;
+        height: 0.9em;
+    }
+    #outputs::-webkit-scrollbar-track {
+        background-color: #424242;
+    }
+    #outputs::-webkit-scrollbar-thumb {
+        background-color: #686868;
+        border-radius: 0.2em;
+    }
+    #outputs::-webkit-scrollbar-corner {
+        background-color: #424242;
+        border-bottom-right-radius: 0.2em;
+    }
 }
 
-.bottom {
+@media (prefers-color-scheme: light) {
+    body {
+        background: white;
+        color: #333;
+    }
+    #outputs {
+        background-color: #F6F8FA;
+        color: #25292E;
+    }
+}
+
+#buttons {
+    padding: 1em;
+    /* margin: auto; */
+    text-align: center;
+}
+
+#outputs {
     width: 80%;
     height: 60%;
     margin: auto;
     overflow: auto;
+    padding: 1em;
+    font-family: 'Courier New', Courier, monospace;
+    border-radius: 0.5em;
 }
+
+.astimodaler-body {
+    width: fit-content;
+    margin: auto;
+}
+
+.about {
+    text-align: left;
+}
+
+.appName {
+    font-size: xx-large;
+    color: #23b1b1;
+}
+
+
+/* .detail {
+} */
+
 
 /* .left {
     background-color: #333;

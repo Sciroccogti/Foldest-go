@@ -1,31 +1,67 @@
 let index = {
-    about: function (html) {
+    about: function(aboutPayload) {
         let c = document.createElement("div");
-        c.innerHTML = html;
+        c.setAttribute("class", "about");
+
+        // display appname
+        let appName = document.createElement("div");
+        appName.setAttribute("class", "appName");
+        appName.innerHTML = aboutPayload.AppName;
+        c.appendChild(appName);
+
+        // use table to display detail info
+        let detail = document.createElement("table");
+        detail.setAttribute("class", "detail");
+
+        detail.insertRow();
+        detail.rows[0].insertCell().innerHTML = "Version:";
+        detail.rows[0].insertCell().innerHTML = aboutPayload.Version;
+
+        detail.insertRow();
+        detail.rows[1].insertCell().innerHTML = "BuiltTime:";
+        detail.rows[1].insertCell().innerHTML = aboutPayload.BuiltTime;
+
+        detail.insertRow();
+        detail.rows[2].insertCell().innerHTML = "Electron:";
+        detail.rows[2].insertCell().innerHTML = aboutPayload.Electron;
+
+        detail.insertRow();
+        detail.rows[3].insertCell().innerHTML = "Astilectron:";
+        detail.rows[3].insertCell().innerHTML = aboutPayload.Astilectron;
+
+        c.appendChild(detail);
+
+        // Github url
+        let githubUrl = document.createElement("a");
+        githubUrl.setAttribute("href", aboutPayload.Github);
+        githubUrl.setAttribute("onclick", "require('electron').shell.openExternal('" + aboutPayload.Github + "')")
+        githubUrl.innerHTML = "Github";
+        c.appendChild(githubUrl);
+
         asticode.modaler.setContent(c);
         asticode.modaler.show();
     },
     addFolder(name, path) {
         let div = document.createElement("div");
         div.className = "dir";
-        div.onclick = function () { index.explore(path) };
+        div.onclick = function() { index.explore(path) };
         div.innerHTML = `<i class="fa fa-folder"></i><span>` + name + `</span>`;
         document.getElementById("dirs").appendChild(div)
     },
-    init: function () {
+    init: function() {
         // Init
         asticode.loader.init();
         asticode.modaler.init();
         asticode.notifier.init();
 
         // Wait for astilectron to be ready
-        document.addEventListener('astilectron-ready', function () {
+        document.addEventListener('astilectron-ready', function() {
             // Listen
             index.listen();
 
             // // Explore default path
             // index.explore();
-        })
+        });
     },
 
     /*
@@ -71,8 +107,8 @@ let index = {
             }
         })
     },*/
-    listen: function () {
-        astilectron.onMessage(function (message) {
+    listen: function() {
+        astilectron.onMessage(function(message) {
             switch (message.name) {
                 case "about":
                     index.about(message.payload);
@@ -92,15 +128,15 @@ let index = {
 };
 
 let foldest = {
-    start: function () {
+    start: function() {
         console.log("button Start is clicked!\n");
         document.getElementById("btn-start").disabled = true;
-        astilectron.sendMessage({ "name": "start" }, function () {
+        astilectron.sendMessage({ "name": "start" }, function() {
             console.log("finished!");
             document.getElementById("btn-start").disabled = false;
         });
     },
-    print: function (html) {
+    print: function(html) {
         document.getElementById("outputs").innerHTML += (html + `<br>`);
     },
 }
