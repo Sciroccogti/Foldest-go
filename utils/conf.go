@@ -29,8 +29,7 @@ func ReadConf() (conf *Conf) {
 	}
 
 	// Set path
-	var isChanged bool
-	isChanged = SetPath(&conf.Targetdir)
+	isChanged := SetPath(&conf.Targetdir)
 
 	// Set default values
 	SetDefault(conf)

@@ -46,16 +46,23 @@ func DoClassify(rules *Rules, path string, isVerbose bool) {
 	} else {
 		panic("rules must be ptr to struct")
 	}
+
+	// collect names of all the rules
+	var names []string
+	for i := 0; i < rType.NumField(); i++ {
+		names = append(names, rVal.Field(i).Interface().(Rule).Name)
+	}
+
 	for i := 0; i < rType.NumField(); i++ {
 		rule := rVal.Field(i).Interface().(Rule)
 		if rule.Enable {
-			doRule(&rule, path, isVerbose)
+			doRule(&rule, &names, path, isVerbose)
 		}
 	}
 }
 
 // doRule :
-func doRule(rule *Rule, path string, isVerbose bool) {
+func doRule(rule *Rule, names *[]string, path string, isVerbose bool) {
 	Print("Performing rule %c[0;33m%s%c[0m ...\n", 0x1B, rule.Name, 0x1B)
 	if !strings.HasSuffix(rule.Name, "/") {
 		rule.Name = rule.Name + "/"
@@ -77,8 +84,8 @@ func doRule(rule *Rule, path string, isVerbose bool) {
 
 	// Moving files to rule dir
 	for _, file := range dir {
-		// jump rule dir
-		if file.Name() == rule.Name || file.IsDir() {
+		// jump rule dirs
+		if inArray(file.Name(), names) || file.IsDir() {
 			continue
 		}
 
@@ -109,4 +116,14 @@ func doRule(rule *Rule, path string, isVerbose bool) {
 			}
 		}
 	}
+}
+
+// inArray : if str is in strs_ then return true, else return false
+func inArray(str string, strs_ *[]string) (bool) {
+	for _, v := range *strs_ {
+		if str == v {
+			return true
+		}
+	}
+	return false
 }
